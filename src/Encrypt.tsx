@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Ncryptr } from "./Ncryptr";
+import { random } from "./Utils";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const Encrypt = () => {
   const [secretCandidate, setSecretCandidate] = useState<string>(
@@ -10,6 +12,7 @@ const Encrypt = () => {
   const [encryptedMessage, setEncryptedMessage] = useState<string | null>(null);
   const [message, setMessage] = useState<string>("");
   const [keyIsValid, setKeyIsValid] = useState(false);
+  const [strEncryptedMessage, setStrEncryptedMessage] = useState<string>("");
   const onSetSecret = (val: string) => {
     setSecret(val);
   };
@@ -20,6 +23,9 @@ const Encrypt = () => {
     console.log("true to do stuff");
     setKeyIsValid(secretCandidate.length === 32);
   }, [secretCandidate]);
+  useEffect(() => {
+    setStrEncryptedMessage(JSON.stringify(encryptedMessage));
+  }, [encryptedMessage]);
   return (
     <form>
       <label htmlFor="secretkey">Secret key</label>
@@ -31,6 +37,17 @@ const Encrypt = () => {
       <button type="button" onClick={() => setSecret(secretCandidate)}>
         Set Secret Key
       </button>
+      <button
+        type="button"
+        onClick={() => {
+          const rando = random(32, false);
+          setSecretCandidate(rando);
+          setSecret(rando);
+        }}
+      >
+        Random
+      </button>
+
       {!keyIsValid && (
         <p>
           <small>Secret Key need to be 32 characters</small>
@@ -51,7 +68,12 @@ const Encrypt = () => {
         Encrypt
       </button>
       {encryptedMessage && (
-        <pre>{JSON.stringify(encryptedMessage, null, 2)}</pre>
+        <>
+          <pre>{JSON.stringify(encryptedMessage, null, 2)}</pre>
+          <CopyToClipboard text={strEncryptedMessage} onCopy={() => {}}>
+            <button type="button">Copy to clipboard with button</button>
+          </CopyToClipboard>
+        </>
       )}
       <hr />
     </form>
