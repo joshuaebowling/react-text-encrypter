@@ -4,9 +4,7 @@ import { random } from "./Utils";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const Encrypt = () => {
-  const [secretCandidate, setSecretCandidate] = useState<string>(
-    "vOVH6sdmpNWjRRIqCc7rdxs01lwHzfr3"
-  );
+  const [secretCandidate, setSecretCandidate] = useState<string>("");
   const [secret, setSecret] = useState<string>("");
   const [ncryptr, setNcryptr] = useState<Ncryptr | null>(null);
   const [encryptedMessage, setEncryptedMessage] = useState<string | null>(null);
@@ -47,6 +45,9 @@ const Encrypt = () => {
       >
         Random
       </button>
+      <CopyToClipboard text={secret} onCopy={() => {}}>
+        <button type="button">Copy Key</button>
+      </CopyToClipboard>
 
       {!keyIsValid && (
         <p>
@@ -62,7 +63,7 @@ const Encrypt = () => {
       <br />
       <button
         type="button"
-        disabled={ncryptr === null}
+        disabled={ncryptr === null || secret === ""}
         onClick={() => setEncryptedMessage(ncryptr?.encrypt(message))}
       >
         Encrypt
@@ -71,8 +72,12 @@ const Encrypt = () => {
         <>
           <pre>{JSON.stringify(encryptedMessage, null, 2)}</pre>
           <CopyToClipboard text={strEncryptedMessage} onCopy={() => {}}>
-            <button type="button">Copy to clipboard with button</button>
+            <button type="button">Copy Hash Contents</button>
           </CopyToClipboard>
+          <h3 style={{ color: "red" }}>
+            Warning!!! You need both the secret key and the Hash Contents to
+            decrypt
+          </h3>
         </>
       )}
       <hr />
