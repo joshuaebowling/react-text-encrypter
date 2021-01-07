@@ -51,7 +51,7 @@ const Encrypt = () => {
 
       {!keyIsValid && (
         <p>
-          <small>Secret Key need to be 32 characters</small>
+          <small>Secret Key needs to be 32 characters</small>
         </p>
       )}
       <p />

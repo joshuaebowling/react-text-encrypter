@@ -20,7 +20,7 @@ const Decrypt = () => {
   };
   useEffect(() => {
     if (!hash) return;
-    setMessage(ncryptr?.decrypt(hash) || null);
+    setMessage(ncryptr.decrypt(hash) || null);
   }, [hash]);
   return (
     <form>
